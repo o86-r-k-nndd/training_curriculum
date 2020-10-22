@@ -15,7 +15,8 @@ class CalendarsController < ApplicationController
   private
   #ストロングパラメーター
   def plan_params
-    params.require(:calendars).permit(:date, :plan)
+    #requireの引数を:planへ変更
+    params.require(:plan).permit(:date, :plan)
   end
   #曜日の表示
   def get_week
