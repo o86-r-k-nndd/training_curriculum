@@ -15,7 +15,7 @@ class CalendarsController < ApplicationController
   private
   #ストロングパラメーター
   def plan_params
-    params.require(:calendars).permit(:date, :plan)
+    params.require(:plan).permit(:date, :plan)
   end
   #曜日の表示
   def get_week
@@ -34,7 +34,14 @@ class CalendarsController < ApplicationController
       plan = plans.map do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
-      days = { month: (@todays_date + x).month, date: (@todays_date+x).day, plans: today_plans }
+      #本日の曜日を定義
+      wday_num = Date.today.wday + x
+      #曜日の配列の値を超えない様にする為の処理
+      if wday_num >= 7
+        wday_num = wday_num - 7
+      end
+      # 曜日の値を新たに記述
+      days = { month: (@todays_date + x).month, date: (@todays_date+x).day, plans: today_plans ,wdays: wdays[(wday_num)] }
       @week_days.push(days)
     end
 
